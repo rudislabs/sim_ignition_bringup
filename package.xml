@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sim_ignition_bringup</name>
+  <version>0.0.1</version>
+  <description>Launch files for sim ignition.</description>
+  <maintainer email="bperseghetti@rudislabs.com">Benjamin Perseghetti</maintainer>
+  <author email="bperseghetti@rudislabs.com">Benjamin Perseghetti</author>
+  <license>BSD-3</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>pkg-config</buildtool_depend>
+
+  <depend>rcl</depend>
+  <depend>rclcpp</depend>
+  <depend>rclpy</depend>
+  <depend>rmw</depend>
+  <depend>rosconsole</depend>
+  
+  <depend>geometry_msgs</depend>
+  <depend>mav_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>rosgraph_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>tf2_msgs</depend>
+  <depend>ignition-msgs</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>visualization_msgs</depend>
+
+  <depend>builtin_interfaces</depend>
+  <depend>ros_ign_interfaces</depend>
+  <depend>ignition-transport</depend>
+
+  <depend>libgflags-dev</depend>
+  <depend>ignition-math6</depend>
+  <depend>image_transport</depend>
+  <depend>ros_ign_bridge</depend>
+
+
+  <depend>std_srvs</depend>
+  <depend>tinyxml_vendor</depend>
+
+  <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo5</depend>
+
+  <build_depend>builtin_interfaces</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+
+  <exec_depend>builtin_interfaces</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>ignition-msgs</exec_depend>
+  <exec_depend>ignition-transport</exec_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+   <!-- Fortress -->
+  <depend condition="$IGNITION_VERSION == fortress">ignition-msgs8</depend>
+  <depend condition="$IGNITION_VERSION == fortress">ignition-transport11</depend>
+  <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
+  <exec_depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</exec_depend>
+  <!-- Edifice (default) -->
+  <depend condition="$IGNITION_VERSION == edifice">ignition-msgs7</depend>
+  <depend condition="$IGNITION_VERSION == edifice">ignition-transport10</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-msgs7</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-transport10</depend>
+  <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo5</depend>
+  <exec_depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</exec_depend>
+  <exec_depend condition="$IGNITION_VERSION == ''">ignition-gazebo5</exec_depend>
+
+  <exec_depend>image_transport_plugins</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>ros_ign_bridge</exec_depend>
+  <exec_depend>ros_ign_gazebo</exec_depend>
+  <exec_depend>ros_ign_image</exec_depend>
+  <exec_depend>rqt_image_view</exec_depend>
+  <exec_depend>rqt_plot</exec_depend>
+  <exec_depend>rqt_topic</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

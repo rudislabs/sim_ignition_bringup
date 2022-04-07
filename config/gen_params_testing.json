@@ -1,0 +1,73 @@
+{	"setup":{
+		"fuel": {
+			"fuelModels": {
+				"fuelModelRepo_0":{
+					"repo": "git@github.com:rudislabs/nxp_ignition.git",
+					"version": "main",
+					"name": "nxp_ignition"
+				}
+			}
+		},
+		"ros2": {
+			"repoROS2_0":{
+				"repo": "git@github.com:rudislabs/nxp_cup_interfaces.git",
+				"version": "aim",
+				"build":{
+					"package": "nxp_cup_interfaces",
+					"prefix": "--packages-select",
+					"postfix": "--symlink-install"}
+			},
+			"repoROS2_1":{
+				"repo": "git@github.com:rudislabs/nxp_cup_vision.git",
+				"version": "nxp-summer",
+				"build":{
+					"package": "nxp_cup_vision",
+					"prefix": "--packages-select",
+					"postfix": "--symlink-install"}
+			}
+		},
+		"system": {
+			"setEnvironment": {
+				"env_0": {
+					"variable": "IGN_GAZEBO_RESOURCE_PATH",
+					"value": "/opt/ros/galactic/lib",
+					"method": "prepend"
+				}
+			}
+		}
+	},
+	"nodes": {
+	},
+	"world": {
+		"fuelName": "nxp_ignition",
+		"name": "canvas",
+		"params":{
+			"skybox": 0,
+			"wind": "NotSet",
+			"WGS84": {
+				"degLatitude": 39.8039,
+				"degLongitude": -84.0606,
+				"mAltitude": 244,
+				"useSphericalCoordinates": 1
+			},
+			"sun": {
+				"model": "sunUTC",
+				"dateUTC": "sunNow"
+			},
+			"embeddedModels": {
+				"embedModel_0": {
+					"model": "El_Mandadero",
+					"name": "El_Mandadero_0",
+					"pose": "0 0 0 0 0 0"
+				},
+				"embedModel_2": {
+					"model": "Buggy3",
+					"name": "Buggy3_0",
+					"pose": "1 1 0 0 0 0"
+				}
+			}
+		}
+	},
+	"models": {
+	}
+}
