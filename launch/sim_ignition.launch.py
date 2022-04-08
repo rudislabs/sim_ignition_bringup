@@ -1,13 +1,10 @@
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.actions import SetLaunchConfiguration
-from launch.actions import IncludeLaunchDescription
-from launch.actions import ExecuteProcess
-from launch.actions import LogInfo
+from launch.actions import ExecuteProcess, LogInfo, DeclareLaunchArgument, SetLaunchConfiguration, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitution
+from launch_ros.descriptions import ParameterValue
+
 import os
 from time import sleep
 import json
@@ -22,7 +19,7 @@ jsonPath = os.path.realpath(os.path.relpath(os.path.join(launchPath,"../config")
 workSpaceROS2 = os.path.realpath(os.path.relpath(os.path.join(launchPath,"../../..")))
 
 #Default to safe
-worldFilePath=empty.sdf
+worldFilePath="empty.sdf"
 
 # Initialize flags
 setTmpIgnitionResourceEnv=False
@@ -46,12 +43,12 @@ setupFuel=setupSystem=setupROS2=world=models=ROS2Nodes = None
 # Setup related configs
 if "setup" in jsonParams:
     setup = jsonParams["setup"]
-if "fuel" in setup:
-    setupFuel = setup["fuel"]
-if "system" in setup:
-    setupSystem = setup["system"]
-if "ros2" in setup:
-    setupROS2 = setup["ros2"]
+    if "fuel" in setup:
+        setupFuel = setup["fuel"]
+    if "system" in setup:
+        setupSystem = setup["system"]
+    if "ros2" in setup:
+        setupROS2 = setup["ros2"]
 
 
 # Runtime related params
@@ -64,77 +61,77 @@ if "models" in jsonParams:
 
 ########################################################################################
 
-if setupFuel not None:
+if setupFuel is not None:
     # Iterate through defined fuel model repos
     for repo in setupFuel["fuelModels"]:
-    fuelRepo = setupFuel["fuelModels"][repo]
-    fuelRepoPath = '{:s}/{:s}'.format(workSpaceROS2, 
-        fuelRepo["name"])
+        fuelRepo = setupFuel["fuelModels"][repo]
+        fuelRepoPath = '{:s}/{:s}'.format(workSpaceROS2, 
+            fuelRepo["name"])
 
-    # Clone fuel model repo if not present
-    if not os.path.isdir(fuelRepoPath):
-        cmdClone = 'git clone -b {:s} {:s} {:s}'.format(
-            fuelRepo["version"],fuelRepo["repo"], fuelRepoPath)
-        cmdClonePopen=shlex.split(cmdClone)
-        clonePopen = subprocess.Popen(cmdClonePopen, 
-            stdout=subprocess.PIPE, text=True)
-        while True:
-            output = clonePopen.stdout.readline()
-            if output == '' and clonePopen.poll() is not None:
-                break
-            if output:
-                print(output.strip())
-        clonePopen.wait()
-
-    # Handle complicated model paths
-    if fuelRepoPath.endswith("/models"):
-        fuelRepoPath = str(os.path.realpath(os.path.join(fuelRepoPath,'..')))
-        if os.path.isdir(os.path.join(fuelRepoPath,'models/.git')):
-            os.system('rm -rf {:s}/models/.git'.format(fuelRepoPath))
-
-    # Handle pulling large world models
-    if fuelRepoPath.endswith("_worlds"):
-        if not os.path.isfile(str(os.path.realpath(os.path.join(fuelRepoPath,
-            'models/.dlm')))) and os.path.isfile(str(os.path.realpath(os.path.join(fuelRepoPath,
-            'scripts/pull_media.py')))):
-            print('''\nUpdating media files in: {:s},
-    this might take a while, please be patient.
-    This can also be run manually with:
-    "python3 {:s}"\n'''.format(fuelRepo["name"],
-                    str(os.path.realpath(os.path.join(fuelRepoPath,
-                        'scripts/pull_media.py')))))
-            cmdDLM = 'python3 {:s}'.format(str(os.path.realpath(os.path.join(fuelRepoPath,'scripts/pull_media.py'))))
-            cmdDLMPopen=shlex.split(cmdDLM)
-            dlmPopen = subprocess.Popen(cmdDLMPopen, 
+        # Clone fuel model repo if not present
+        if not os.path.isdir(fuelRepoPath):
+            cmdClone = 'git clone -b {:s} {:s} {:s}'.format(
+                fuelRepo["version"],fuelRepo["repo"], fuelRepoPath)
+            cmdClonePopen=shlex.split(cmdClone)
+            clonePopen = subprocess.Popen(cmdClonePopen, 
                 stdout=subprocess.PIPE, text=True)
             while True:
-                output = dlmPopen.stdout.readline()
-                if output == '' and dlmPopen.poll() is not None:
+                output = clonePopen.stdout.readline()
+                if output == '' and clonePopen.poll() is not None:
                     break
                 if output:
                     print(output.strip())
-            dlmPopen.wait()
+            clonePopen.wait()
+
+        # Handle complicated model paths
+        if fuelRepoPath.endswith("/models"):
+            fuelRepoPath = str(os.path.realpath(os.path.join(fuelRepoPath,'..')))
+            if os.path.isdir(os.path.join(fuelRepoPath,'models/.git')):
+                os.system('rm -rf {:s}/models/.git'.format(fuelRepoPath))
+
+        # Handle pulling large world models
+        if fuelRepoPath.endswith("_worlds"):
+            if not os.path.isfile(str(os.path.realpath(os.path.join(fuelRepoPath,
+                'models/.dlm')))) and os.path.isfile(str(os.path.realpath(os.path.join(fuelRepoPath,
+                'scripts/pull_media.py')))):
+                print('''\nUpdating media files in: {:s},
+        this might take a while, please be patient.
+        This can also be run manually with:
+        "python3 {:s}"\n'''.format(fuelRepo["name"],
+                        str(os.path.realpath(os.path.join(fuelRepoPath,
+                            'scripts/pull_media.py')))))
+                cmdDLM = 'python3 {:s}'.format(str(os.path.realpath(os.path.join(fuelRepoPath,'scripts/pull_media.py'))))
+                cmdDLMPopen=shlex.split(cmdDLM)
+                dlmPopen = subprocess.Popen(cmdDLMPopen, 
+                    stdout=subprocess.PIPE, text=True)
+                while True:
+                    output = dlmPopen.stdout.readline()
+                    if output == '' and dlmPopen.poll() is not None:
+                        break
+                    if output:
+                        print(output.strip())
+                dlmPopen.wait()
 
 
-    # Check to see if fuel model path environment variable is reset yet, if not reset to avoid other models
-    if not setTmpIgnitionResourceEnv:
-        os.environ['IGN_GAZEBO_RESOURCE_PATH'] = '/tmp/fuel/models:/tmp/fuel/worlds:{:s}'.format(
-            os.getenv('IGN_GAZEBO_RESOURCE_PATH'))
-        setTmpIgnitionResourceEnv=True
+        # Check to see if fuel model path environment variable is reset yet, if not reset to avoid other models
+        if not setTmpIgnitionResourceEnv:
+            os.environ['IGN_GAZEBO_RESOURCE_PATH'] = '/tmp/fuel/models:/tmp/fuel/worlds:{:s}'.format(
+                os.getenv('IGN_GAZEBO_RESOURCE_PATH'))
+            setTmpIgnitionResourceEnv=True
 
-    # Append to fuel model/world path environment for subsequent repos if not present
-    if os.path.isdir(os.path.join(fuelRepoPath,'models')) and setTmpIgnitionResourceEnv and ('{:s}/models'.format(fuelRepoPath) not in os.getenv('IGN_GAZEBO_RESOURCE_PATH')):
-        os.environ['IGN_GAZEBO_RESOURCE_PATH'] = '{:s}/models:{:s}'.format(
-            fuelRepoPath, os.getenv('IGN_GAZEBO_RESOURCE_PATH'))
-    if os.path.isdir(os.path.join(fuelRepoPath,'worlds')) and setTmpIgnitionResourceEnv and ('{:s}/worlds'.format(fuelRepoPath) not in os.getenv('IGN_GAZEBO_RESOURCE_PATH')):
-        os.environ['IGN_GAZEBO_RESOURCE_PATH'] = '{:s}/worlds:{:s}'.format(
-            fuelRepoPath, os.getenv('IGN_GAZEBO_RESOURCE_PATH'))
-    if not os.path.isdir(os.path.join(fuelRepoPath,'worlds')) and not os.path.isdir(os.path.join(fuelRepoPath,'models')) and setTmpIgnitionResourceEnv and ('{:s}/worlds'.format(fuelRepoPath) not in os.getenv('IGN_GAZEBO_RESOURCE_PATH')):
-        os.environ['IGN_GAZEBO_RESOURCE_PATH'] = '{:s}:{:s}'.format(
-            fuelRepoPath, os.getenv('IGN_GAZEBO_RESOURCE_PATH'))
+        # Append to fuel model/world path environment for subsequent repos if not present
+        if os.path.isdir(os.path.join(fuelRepoPath,'models')) and setTmpIgnitionResourceEnv and ('{:s}/models'.format(fuelRepoPath) not in os.getenv('IGN_GAZEBO_RESOURCE_PATH')):
+            os.environ['IGN_GAZEBO_RESOURCE_PATH'] = '{:s}/models:{:s}'.format(
+                fuelRepoPath, os.getenv('IGN_GAZEBO_RESOURCE_PATH'))
+        if os.path.isdir(os.path.join(fuelRepoPath,'worlds')) and setTmpIgnitionResourceEnv and ('{:s}/worlds'.format(fuelRepoPath) not in os.getenv('IGN_GAZEBO_RESOURCE_PATH')):
+            os.environ['IGN_GAZEBO_RESOURCE_PATH'] = '{:s}/worlds:{:s}'.format(
+                fuelRepoPath, os.getenv('IGN_GAZEBO_RESOURCE_PATH'))
+        if not os.path.isdir(os.path.join(fuelRepoPath,'worlds')) and not os.path.isdir(os.path.join(fuelRepoPath,'models')) and setTmpIgnitionResourceEnv and ('{:s}/worlds'.format(fuelRepoPath) not in os.getenv('IGN_GAZEBO_RESOURCE_PATH')):
+            os.environ['IGN_GAZEBO_RESOURCE_PATH'] = '{:s}:{:s}'.format(
+                fuelRepoPath, os.getenv('IGN_GAZEBO_RESOURCE_PATH'))
 
 ########################################################################################
-if setupSystem not None:
+if setupSystem is not None:
     # Set environment variables if present
     if "setEnvironment" in setupSystem:
         for env in setupSystem["setEnvironment"]:
@@ -163,7 +160,7 @@ if setupSystem not None:
 
 ########################################################################################
 
-if setupROS2 not None:
+if setupROS2 is not None:
     for build in setupROS2:
         buildROS2Pkg = setupROS2[build]
         pathROS2Pkg = '{:s}/src/{:s}'.format(workSpaceROS2,buildROS2Pkg["build"]["package"])
@@ -208,15 +205,15 @@ if setupROS2 not None:
 ########################################################################################
 
 # Generate the world
-if world not None:
+if world is not None:
     if 'name' not in world:
-        world['name']="NotSet"
+        world["name"]="NotSet"
 
     if 'params' in world:
-        worldArgs=' --name "{:s}"'.format(world['name'])
-        for param in world['params']:
+        worldArgs=' --name "{:s}"'.format(world["name"])
+        for param in world["params"]:
             worldArgs += ' --{:s} "{:s}"'.format(param, 
-                str(world['params'][param]))
+                str(world["params"][param]))
 
         cmdWorldGen = 'python3 {:s}/{:s}/scripts/jinja_world_gen.py{:s}'.format(
             workSpaceROS2, world["fuelName"], worldArgs
@@ -235,18 +232,19 @@ if world not None:
 
         worldFilePath='/tmp/fuel/worlds/{:s}.sdf'.format(world["name"])
 
+        worldLatitude = world["params"]["WGS84"]["degLatitude"]
+        worldLongitude = world["params"]["WGS84"]["degLongitude"]
+        worldAltitude = world["params"]["WGS84"]["mAltitude"]
+        if debugVerbose:
+            print('World latitude: {:s}, longitude: {:s} altitude: {:s}'.format(
+                str(worldLatitude), str(worldLongitude), str(worldAltitude)))
+
     else:
         worldFilePath='{:s}/{:s}/worlds/{:s}.sdf'.format(workSpaceROS2,
             world["fuelName"],world["name"])
 
     # Set relevant world values
-    worldLatitude = world["WGS84"]['degLatitude']
-    worldLongitude = world["WGS84"]['degLongitude']
-    worldAltitude = world["WGS84"]['mAltitude']
 
-    if debugVerbose:
-        print('World latitude: {:s}, longitude: {:s} altitude: {:s}'.format(
-            str(worldLatitude), str(worldLongitude), str(worldAltitude)))
 
     if overideROS2Ignition:
         cmdIgnition = 'ign gazebo {:s} -v 4'.format(str(worldFilePath))
@@ -257,7 +255,7 @@ if world not None:
 
 ########################################################################################
 
-if models not None:
+if models is not None:
     # Generate model files
     for model in models:
 
@@ -296,14 +294,13 @@ if models not None:
 ########################################################################################
 
 def generate_launch_description():
-
+    launchConfigWorld=LaunchConfiguration('world')
     ld = LaunchDescription([
         # World path argument
         DeclareLaunchArgument(
-            'world', default_value= worldFilePath,
+            'world', default_value=worldFilePath,
             description='Full world.sdf name'),
         ])
-
 
     if not overideROS2Ignition:
         # Get path to ignition package
@@ -313,14 +310,14 @@ def generate_launch_description():
         ignGazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
                 launch_arguments={
-                    'ign_args': '-r {:s} -v 4'.format(LaunchConfiguration('world'))
+                    'ign_args': '-r {:s} -v 4'.format(worldFilePath)
         }.items(),
         )
 
-        ld.add_action(ignition_server)
+        ld.add_action(ignGazebo)
 
     ####################################################################################
-    if ROS2Nodes not None:
+    if ROS2Nodes is not None:
         # pre-spawn ROS2 Nodes
         for ROS2Node in ROS2Nodes:
             node = ROS2Nodes[ROS2Node]
@@ -346,7 +343,7 @@ def generate_launch_description():
 
     ####################################################################################
 
-    if models not None:
+    if models is not None:
         # Initialize models
         for model in models:
 
@@ -392,7 +389,7 @@ def generate_launch_description():
 
     ####################################################################################
 
-    if ROS2Nodes not None:
+    if ROS2Nodes is not None:
         # post-spawn ROS2 Nodes
         for ROS2Node in ROS2Nodes:
             node = ROS2Nodes[ROS2Node]
