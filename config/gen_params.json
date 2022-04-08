@@ -27,14 +27,14 @@
 			},
 			"embeddedModels": {
 				"embedModel_0": {
-					"model": "El_Mandadero",
-					"name": "El_Mandadero_0",
-					"pose": "0 0 .5 0 0 0"
+					"model": "Raceway",
+					"name": "Raceway",
+					"pose": "0 0 0 0 0 -1.57"
 				},
 				"embedModel_2": {
 					"model": "Buggy3",
-					"name": "Buggy3_0",
-					"pose": "1 1 .5 0 0 0"
+					"name": "Buggy3",
+					"pose": "0 0 .5 0 0 0"
 				}
 			}
 		}
