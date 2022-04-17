@@ -330,18 +330,35 @@ def generate_launch_description():
             if node["timing"] == "pre-spawn":
                 if "remappings" in node:
                     remappings = [eval(str(node["remappings"]))]
-                    preSpawnNode = Node(package=node["package"],
-                        executable=node["executable"],
-                        name=str(node["name"]), 
-                        output=node["output"],
-                        parameters=node["parameters"],
-                        remappings=remappings)
+                    if "arguments" in node:
+                        preSpawnNode = Node(package=node["package"],
+                            executable=node["executable"],
+                            name=str(node["name"]), 
+                            output=node["output"],
+                            arguments=node["arguments"],
+                            parameters=node["parameters"],
+                            remappings=remappings)
+                    else:
+                        preSpawnNode = Node(package=node["package"],
+                            executable=node["executable"],
+                            name=str(node["name"]), 
+                            output=node["output"],
+                            parameters=node["parameters"],
+                            remappings=remappings)
                 else:
-                    preSpawnNode = Node(package=node["package"],
-                        executable=node["executable"],
-                        name=str(node["name"]), 
-                        output=node["output"],
-                        parameters=node["parameters"])
+                    if "arguments" in node:
+                        preSpawnNode = Node(package=node["package"],
+                            executable=node["executable"],
+                            name=str(node["name"]), 
+                            output=node["output"],
+                            arguments=node["arguments"],
+                            parameters=node["parameters"])
+                    else:
+                        preSpawnNode = Node(package=node["package"],
+                            executable=node["executable"],
+                            name=str(node["name"]), 
+                            output=node["output"],
+                            parameters=node["parameters"])
 
                 ld.add_action(preSpawnNode)
 
@@ -402,18 +419,35 @@ def generate_launch_description():
             if node["timing"] == "post-spawn":
                 if "remappings" in node:
                     remappings = [eval(str(node["remappings"]))]
-                    postSpawnNode = Node(package=node["package"],
-                        executable=node["executable"],
-                        name=str(node["name"]), 
-                        output=node["output"],
-                        parameters=node["parameters"],
-                        remappings=remappings)
+                    if "arguments" in node:
+                        postSpawnNode = Node(package=node["package"],
+                            executable=node["executable"],
+                            name=str(node["name"]), 
+                            output=node["output"],
+                            arguments=node["arguments"],
+                            parameters=node["parameters"],
+                            remappings=remappings)
+                    else:
+                        postSpawnNode = Node(package=node["package"],
+                            executable=node["executable"],
+                            name=str(node["name"]), 
+                            output=node["output"],
+                            parameters=node["parameters"],
+                            remappings=remappings)
                 else:
-                    postSpawnNode = Node(package=node["package"],
-                        executable=node["executable"],
-                        name=str(node["name"]), 
-                        output=node["output"],
-                        parameters=node["parameters"])
+                    if "arguments" in node:
+                        postSpawnNode = Node(package=node["package"],
+                            executable=node["executable"],
+                            name=str(node["name"]), 
+                            output=node["output"],
+                            arguments=node["arguments"],
+                            parameters=node["parameters"])
+                    else:
+                        postSpawnNode = Node(package=node["package"],
+                            executable=node["executable"],
+                            name=str(node["name"]), 
+                            output=node["output"],
+                            parameters=node["parameters"])
 
                 ld.add_action(postSpawnNode)
 

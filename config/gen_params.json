@@ -73,6 +73,24 @@
 							{"angular_velocity": -4.0},
 							{"single_line_steer_scale": 0.6}
 						]
+		},
+		"ros2Node_3":{
+			"timing": "post-spawn",
+			"package": "ros_ign_image",
+			"executable": "image_bridge",
+			"name": "image_bridge",
+			"output": "screen",
+			"arguments": ["CMUcam5/image_raw"],
+			"parameters": []
+		},
+		"ros2Node_4":{
+			"timing": "post-spawn",
+			"package": "ros_ign_bridge",
+			"executable": "parameter_bridge",
+			"name": "parameter_bridge",
+			"output": "screen",
+			"arguments": ["/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist"],
+			"parameters": []
 		}
 	},
 	"world": {
