@@ -4,6 +4,7 @@ from launch.actions import ExecuteProcess, LogInfo, DeclareLaunchArgument, SetLa
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitution
 from launch_ros.descriptions import ParameterValue
+from launch_ros.actions import Node
 
 import os
 from time import sleep
@@ -115,8 +116,11 @@ if setupFuel is not None:
 
         # Check to see if fuel model path environment variable is reset yet, if not reset to avoid other models
         if not setTmpIgnitionResourceEnv:
-            os.environ['IGN_GAZEBO_RESOURCE_PATH'] = '/tmp/fuel/models:/tmp/fuel/worlds:{:s}'.format(
-                os.getenv('IGN_GAZEBO_RESOURCE_PATH'))
+            if os.getenv('IGN_GAZEBO_RESOURCE_PATH'):
+                os.environ['IGN_GAZEBO_RESOURCE_PATH'] = '/tmp/fuel/models:/tmp/fuel/worlds:{:s}'.format(
+                    os.getenv('IGN_GAZEBO_RESOURCE_PATH'))
+            else:
+                os.environ['IGN_GAZEBO_RESOURCE_PATH'] = '/tmp/fuel/models:/tmp/fuel/worlds'
             setTmpIgnitionResourceEnv=True
 
         # Append to fuel model/world path environment for subsequent repos if not present

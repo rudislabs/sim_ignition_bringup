@@ -1,0 +1,42 @@
+{	"setup":{
+		"fuel": {
+			"fuelModels": {
+				"fuelModelRepo_0":{
+					"repo": "git@github.com:rudislabs/nxp_fuel.git",
+					"version": "main",
+					"name": "nxp_fuel"
+				}
+			}
+		}
+	},
+	"world": {
+		"fuelName": "nxp_fuel",
+		"name": "ground_plane",
+		"params":{
+			"skybox": 0,
+			"wind": "NotSet",
+			"WGS84": {
+				"degLatitude": 39.8039,
+				"degLongitude": -84.0606,
+				"mAltitude": 244,
+				"useSphericalCoords": 1
+			},
+			"sun": {
+				"model": "sunUTC",
+				"dateUTC": "1904/09/20/17:30"
+			},
+			"embeddedModels": {
+				"embedModel_0": {
+					"model": "Raceway",
+					"name": "Raceway",
+					"pose": "0 0 0 0 0 -1.57"
+				},
+				"embedModel_2": {
+					"model": "Buggy3",
+					"name": "Buggy3",
+					"pose": "0 0 .5 0 0 0"
+				}
+			}
+		}
+	}
+}

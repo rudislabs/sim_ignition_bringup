@@ -1,16 +1,82 @@
 {	"setup":{
 		"fuel": {
 			"fuelModels": {
-				"fuelModelRepo_0":{
-					"repo": "git@github.com:rudislabs/nxp_ignition.git",
-					"version": "main",
-					"name": "nxp_ignition"
+				"fuelModelsRepo_0":{
+					"repo": "git@github.com:rudislabs/nxp_fuel.git",
+					"version": "aim",
+					"name": "nxp_fuel"
+				}
+			}
+		},
+		"ros2": {
+			"ros2Repo_0":{
+				"repo": "git@github.com:rudislabs/nxp_cup_interfaces.git",
+				"version": "aim",
+				"build": {
+					"package": "nxp_cup_interfaces",
+					"prefix": "--packages-select",
+					"postfix": "--symlink-install"
+				}
+			},
+			"ros2Repo_1":{
+				"repo": "git@github.com:rudislabs/nxp_cup_vision.git",
+				"version": "aim_ign",
+				"build": {
+					"package": "nxp_cup_vision",
+					"prefix": "--packages-select",
+					"postfix": "--symlink-install"
+				}
+			},
+			"ros2Repo_2":{
+				"repo": "git@github.com:rudislabs/aim_line_follow.git",
+				"version": "aim_ign",
+				"build": {
+					"package": "aim_line_follow",
+					"prefix": "--packages-select",
+					"postfix": "--symlink-install"
 				}
 			}
 		}
 	},
+	"nodes": {
+		"ros2Node_0":{
+			"timing": "post-spawn",
+			"package": "nxp_cup_vision",
+			"executable": "nxp_track_vision",
+			"name": "nxp_track_vision_0",
+			"output": "screen",
+			"parameters": [	{"pyramid_down": 0},
+							{"camera_image": "CMUcam5"},
+							{"debug_image": "debugImage0"},
+							{"namespace": "cupcar0"},
+							{"mask_ratio_array": [1.0, 0.4]}
+
+						]
+		},
+		"ros2Node_1":{
+			"timing": "post-spawn",
+			"package": "rqt_image_view",
+			"executable": "rqt_image_view",
+			"name": "rqt_image_view_0",
+			"output": "screen",
+			"parameters": []
+		},
+		"ros2Node_2":{
+			"timing": "post-spawn",
+			"package": "aim_line_follow",
+			"executable": "line_follower",
+			"name": "line_follower_0",
+			"output": "screen",
+			"parameters": [	{"start_delay": 7.0},
+							{"camera_vector_topic": "/cupcar0/PixyVector"},
+							{"linear_velocity": 1.3},
+							{"angular_velocity": -4.0},
+							{"single_line_steer_scale": 0.6}
+						]
+		}
+	},
 	"world": {
-		"fuelName": "nxp_ignition",
+		"fuelName": "nxp_fuel",
 		"name": "ground_plane",
 		"params":{
 			"skybox": 0,
