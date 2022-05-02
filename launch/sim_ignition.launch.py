@@ -322,45 +322,41 @@ def generate_launch_description():
 
     ####################################################################################
     if ROS2Nodes is not None:
-        # pre-spawn ROS2 Nodes
         for ROS2Node in ROS2Nodes:
             node = ROS2Nodes[ROS2Node]
-
-            # Run if timing set to pre-spawn of model
-            if node["timing"] == "pre-spawn":
-                if "remappings" in node:
-                    remappings = [eval(str(node["remappings"]))]
-                    if "arguments" in node:
-                        preSpawnNode = Node(package=node["package"],
-                            executable=node["executable"],
-                            name=str(node["name"]), 
-                            output=node["output"],
-                            arguments=node["arguments"],
-                            parameters=node["parameters"],
-                            remappings=remappings)
-                    else:
-                        preSpawnNode = Node(package=node["package"],
-                            executable=node["executable"],
-                            name=str(node["name"]), 
-                            output=node["output"],
-                            parameters=node["parameters"],
-                            remappings=remappings)
+            if "remappings" in node:
+                remappings = [eval(str(node["remappings"]))]
+                if "arguments" in node:
+                    spawnNode = Node(package=node["package"],
+                        executable=node["executable"],
+                        name=str(node["name"]), 
+                        output=node["output"],
+                        arguments=node["arguments"],
+                        parameters=node["parameters"],
+                        remappings=remappings)
                 else:
-                    if "arguments" in node:
-                        preSpawnNode = Node(package=node["package"],
-                            executable=node["executable"],
-                            name=str(node["name"]), 
-                            output=node["output"],
-                            arguments=node["arguments"],
-                            parameters=node["parameters"])
-                    else:
-                        preSpawnNode = Node(package=node["package"],
-                            executable=node["executable"],
-                            name=str(node["name"]), 
-                            output=node["output"],
-                            parameters=node["parameters"])
+                    spawnNode = Node(package=node["package"],
+                        executable=node["executable"],
+                        name=str(node["name"]), 
+                        output=node["output"],
+                        parameters=node["parameters"],
+                        remappings=remappings)
+            else:
+                if "arguments" in node:
+                    spawnNode = Node(package=node["package"],
+                        executable=node["executable"],
+                        name=str(node["name"]), 
+                        output=node["output"],
+                        arguments=node["arguments"],
+                        parameters=node["parameters"])
+                else:
+                    spawnNode = Node(package=node["package"],
+                        executable=node["executable"],
+                        name=str(node["name"]), 
+                        output=node["output"],
+                        parameters=node["parameters"])
 
-                ld.add_action(preSpawnNode)
+            ld.add_action(spawnNode)
 
     ####################################################################################
 
@@ -409,49 +405,6 @@ def generate_launch_description():
             #         stdout=subprocess.PIPE, text=True)
 
     ####################################################################################
-
-    if ROS2Nodes is not None:
-        # post-spawn ROS2 Nodes
-        for ROS2Node in ROS2Nodes:
-            node = ROS2Nodes[ROS2Node]
-
-            # Run if timing set to post-spawn of model
-            if node["timing"] == "post-spawn":
-                if "remappings" in node:
-                    remappings = [eval(str(node["remappings"]))]
-                    if "arguments" in node:
-                        postSpawnNode = Node(package=node["package"],
-                            executable=node["executable"],
-                            name=str(node["name"]), 
-                            output=node["output"],
-                            arguments=node["arguments"],
-                            parameters=node["parameters"],
-                            remappings=remappings)
-                    else:
-                        postSpawnNode = Node(package=node["package"],
-                            executable=node["executable"],
-                            name=str(node["name"]), 
-                            output=node["output"],
-                            parameters=node["parameters"],
-                            remappings=remappings)
-                else:
-                    if "arguments" in node:
-                        postSpawnNode = Node(package=node["package"],
-                            executable=node["executable"],
-                            name=str(node["name"]), 
-                            output=node["output"],
-                            arguments=node["arguments"],
-                            parameters=node["parameters"])
-                    else:
-                        postSpawnNode = Node(package=node["package"],
-                            executable=node["executable"],
-                            name=str(node["name"]), 
-                            output=node["output"],
-                            parameters=node["parameters"])
-
-                ld.add_action(postSpawnNode)
-
-########################################################################################
 
 
     return ld
