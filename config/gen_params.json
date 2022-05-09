@@ -3,7 +3,7 @@
 			"fuelModels": {
 				"fuelModelsRepo_0":{
 					"repo": "git@github.com:rudislabs/nxp_fuel.git",
-					"version": "EindhovenElMandaderoDemo",
+					"version": "RoverGamesDemo",
 					"name": "nxp_fuel"
 				}
 			}
@@ -46,6 +46,23 @@
 							{"enable_turbo_button": 6},
 							{"require_enable_button": false}],
 			"remappings": "('/cmd_vel', 'cmd_vel')"
+		},
+		"ros2Node_3":{
+			"timing": "post-spawn",
+			"package": "ros_ign_image",
+			"executable": "image_bridge",
+			"name": "image_bridge",
+			"output": "screen",
+			"arguments": ["CMUcam5/image_raw"],
+			"parameters": []
+		},
+		"ros2Node_4":{
+			"timing": "post-spawn",
+			"package": "rqt_image_view",
+			"executable": "rqt_image_view",
+			"name": "rqt_image_view_0",
+			"output": "screen",
+			"parameters": []
 		}
 	},
 	"world": {
