@@ -78,7 +78,7 @@
 		"fuelName": "nxp_fuel",
 		"name": "ground_plane",
 		"params":{
-			"skybox": 0,
+			"skybox": 1,
 			"wind": "NotSet",
 			"WGS84": {
 				"degLatitude": 39.8039,
@@ -99,7 +99,7 @@
 				"embedModel_2": {
 					"model": "Buggy3",
 					"name": "Buggy3",
-					"pose": "0 0 .5 0 0 0"
+					"pose": "-2 0 .5 0 0 0"
 				}
 			}
 		}
