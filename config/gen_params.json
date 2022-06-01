@@ -64,7 +64,7 @@
 		"ros2Node_2":{
 			"timing": "post-spawn",
 			"package": "aim_line_follow",
-			"executable": "line_follower",
+			"executable": "aim_line_follow",
 			"name": "line_follower_0",
 			"output": "screen",
 			"parameters": [	{"start_delay": 7.0},
