@@ -200,9 +200,9 @@ if setupROS2 is not None:
     # Require restart if colcon packages built so they can be correctly found
     if hasBuiltROS2Pkgs:
         os.system('/bin/bash {:s}/install/setup.bash'.format(workSpaceROS2))
-        os.system("/bin/bash /opt/ros/foxy/setup.bash")
+        os.system("/bin/bash /opt/ros/humble/setup.bash")
         print('''\n\n\nPLEASE RUN:\n 
-            source {:s}/install/setup.bash; source /opt/ros/foxy/setup.bash; ros2 launch sim_ignition_bringup sim_ignition.launch.py
+            source {:s}/install/setup.bash; source /opt/ros/humble/setup.bash; ros2 launch sim_ignition_bringup sim_ignition.launch.py
             \n\n'''.format(workSpaceROS2))
         sys.exit()
 
