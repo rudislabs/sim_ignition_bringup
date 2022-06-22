@@ -44,7 +44,7 @@
 			"executable": "parameter_bridge",
 			"name": "parameter_bridge",
 			"output": "screen",
-			"arguments": ["/supervised_cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist"],
+			"arguments": ["/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist"],
 			"parameters": []
 		},
 		"ros2Node_1":{
@@ -91,7 +91,7 @@
 			"output": "screen",
 			"parameters": [{"debug_topic": "/DebugImageReal"},
 							{"tflite_topic": "/TFLiteReal"},
-							{"image_topic": "/NPU/image_raw"},
+							{"image_topic": "/NPU/image_real"},
 							{"threshold": 0.6},
 							{"max_returns": 5},
 							{"max_queue": 30}]
@@ -100,12 +100,12 @@
 			"timing": "post-spawn",
 			"package": "debug_image_tf_lite",
 			"executable": "debug_image_tf_lite_node",
-			"name": "debug_image_tf_lite_node_sim",
+			"name": "debug_image_tf_lite_node_real",
 			"output": "screen",
 			"parameters": [{"debug_topic": "/DebugImageSim"},
 							{"tflite_topic": "/TFLiteSim"},
 							{"image_topic": "/NPU/image_sim"},
-							{"threshold": 0.6},
+							{"threshold": 0.3},
 							{"max_returns": 5},
 							{"max_queue": 30}]
 		},
@@ -144,6 +144,11 @@
 					"model": "Buggy3",
 					"name": "Buggy3",
 					"pose": "-2 0 .5 0 0 0"
+				},
+				"embedModel_3": {
+					"model": "rescue_randy",
+					"name": "rescue_randy",
+					"pose": "5 0 0 0 0 0"
 				}
 			}
 		}
