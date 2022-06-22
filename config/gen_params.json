@@ -9,6 +9,33 @@
 			}
 		},
 		"ros2": {
+			"ros2Repo_0":{
+					"repo": "git@github.com:rudislabs/tflite_msgs.git",
+					"version": "humble",
+					"build": {
+						"package": "tflite_msgs",
+						"prefix": "--packages-select",
+						"postfix": "--symlink-install"
+				}
+			},
+			"ros2Repo_1":{
+				"repo": "git@github.com:rudislabs/canfd_msgs.git",
+				"version": "humble",
+				"build": {
+					"package": "canfd_msgs",
+					"prefix": "--packages-select",
+					"postfix": "--symlink-install"
+				}
+			},
+			"ros2Repo_2":{
+				"repo": "git@github.com:rudislabs/debug_image_tf_lite.git",
+				"version": "humble",
+				"build": {
+					"package": "debug_image_tf_lite",
+					"prefix": "--packages-select",
+					"postfix": "--symlink-install"
+				}
+			}
 		}
 	},
 	"nodes": {
@@ -17,7 +44,7 @@
 			"executable": "parameter_bridge",
 			"name": "parameter_bridge",
 			"output": "screen",
-			"arguments": ["/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist"],
+			"arguments": ["/supervised_cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist"],
 			"parameters": []
 		},
 		"ros2Node_1":{
@@ -45,7 +72,7 @@
 							{"enable_button": 5},
 							{"enable_turbo_button": 6},
 							{"require_enable_button": false}],
-			"remappings": "('/cmd_vel', 'no_vel')"
+			"remappings": "('/cmd_vel', '/requested_cmd_vel')"
 		},
 		"ros2Node_3":{
 			"timing": "post-spawn",
@@ -53,19 +80,36 @@
 			"executable": "image_bridge",
 			"name": "image_bridge",
 			"output": "screen",
-			"arguments": ["CMUcam5/image_raw"],
+			"arguments": ["NPU/image_sim"],
 			"parameters": []
 		},
 		"ros2Node_4":{
 			"timing": "post-spawn",
-			"package": "ros_ign_image",
-			"executable": "image_bridge",
-			"name": "image_bridge",
+			"package": "debug_image_tf_lite",
+			"executable": "debug_image_tf_lite_node",
+			"name": "debug_image_tf_lite_node_real",
 			"output": "screen",
-			"arguments": ["NPU/image_raw"],
-			"parameters": []
+			"parameters": [{"debug_topic": "/DebugImageReal"},
+							{"tflite_topic": "/TFLiteReal"},
+							{"image_topic": "/NPU/image_raw"},
+							{"threshold": 0.6},
+							{"max_returns": 5},
+							{"max_queue": 30}]
 		},
 		"ros2Node_5":{
+			"timing": "post-spawn",
+			"package": "debug_image_tf_lite",
+			"executable": "debug_image_tf_lite_node",
+			"name": "debug_image_tf_lite_node_sim",
+			"output": "screen",
+			"parameters": [{"debug_topic": "/DebugImageSim"},
+							{"tflite_topic": "/TFLiteSim"},
+							{"image_topic": "/NPU/image_sim"},
+							{"threshold": 0.6},
+							{"max_returns": 5},
+							{"max_queue": 30}]
+		},
+		"ros2Node_6":{
 			"timing": "post-spawn",
 			"package": "rqt_image_view",
 			"executable": "rqt_image_view",
@@ -78,7 +122,7 @@
 		"fuelName": "nxp_fuel",
 		"name": "ground_plane",
 		"params":{
-			"skybox": 1,
+			"skybox": 0,
 			"wind": "NotSet",
 			"WGS84": {
 				"degLatitude": 39.8039,
