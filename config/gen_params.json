@@ -67,12 +67,12 @@
 							{"scale_linear.x": -5.0},
 							{"scale_linear_turbo.x": -10.0},
 							{"axis_angular.yaw": 0},
-							{"scale_angular.yaw": 3.0},
-							{"scale_angular_turbo.yaw": 6.0},
+							{"scale_angular.yaw": -3.0},
+							{"scale_angular_turbo.yaw": -6.0},
 							{"enable_button": 5},
 							{"enable_turbo_button": 6},
 							{"require_enable_button": false}],
-			"remappings": "('/cmd_vel', '/requested_cmd_vel')"
+			"remappings": "('/cmd_vel', '/requested_vel')"
 		},
 		"ros2Node_3":{
 			"timing": "post-spawn",
@@ -136,9 +136,9 @@
 			},
 			"embeddedModels": {
 				"embedModel_0": {
-					"model": "Raceway",
-					"name": "Raceway",
-					"pose": "0 0 0 0 0 -1.57"
+					"model": "Depot",
+					"name": "Depot",
+					"pose": "0 0 0 0 0 0"
 				},
 				"embedModel_2": {
 					"model": "Buggy3",
@@ -148,7 +148,7 @@
 				"embedModel_3": {
 					"model": "rescue_randy",
 					"name": "rescue_randy",
-					"pose": "5 0 0 0 0 0"
+					"pose": "5 0 0 0 0 -1.57"
 				}
 			}
 		}
