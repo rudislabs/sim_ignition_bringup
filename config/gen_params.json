@@ -143,17 +143,22 @@
 				"embedModel_2": {
 					"model": "Buggy3",
 					"name": "Buggy3",
-					"pose": "-2 0 .5 0 0 0"
+					"pose": "-4 0 .5 0 0 0"
 				},
 				"embedModel_3": {
 					"model": "Apartment",
-					"name": "Apartment",
-					"pose": "2 12.8 0 0 0 0"
+					"name": "Apartment0",
+					"pose": "0 12.0 0 0 0 0"
 				},
 				"embedModel_4": {
 					"model": "Ambulance",
 					"name": "Ambulance",
-					"pose": "-1 -5 0 0 0 0"
+					"pose": "0 -4.5 0 0 0 0"
+				},
+				"embedModel_5": {
+					"model": "Apartment",
+					"name": "Apartment1",
+					"pose": "0 -34.5 0 0 0 0"
 				}
 			},
 			"actors": {
@@ -180,27 +185,68 @@
 							"waypoints": {
 								"waypoint_0":{
 									"time": 0.0,
-									"pose": "2 0 0 0 0 -1.57"
+									"pose": "0 0 0 0 0 -1.57"
 								},
 								"waypoint_1":{
-									"time": 12.0,
-									"pose": "2 -6 0 0 0 -1.57"
+									"time": 1.0,
+									"pose": "0 0 0 0 0 1.57"
 								},
 								"waypoint_2":{
-									"time": 12.5,
-									"pose": "2 -6 0 0 0 1.57"
+									"time": 3.5,
+									"pose": "0 2 0 0 0 1.57"
 								},
 								"waypoint_3":{
-									"time": 36.5,
-									"pose": "2 6 0 0 0 1.57"
+									"time": 4,
+									"pose": "0 2 0 0 0 -1.57"
 								},
 								"waypoint_4":{
-									"time": 37.0,
-									"pose": "2 6 0 0 0 -1.57"
+									"time": 6.5,
+									"pose": "0 0 0 0 0 -1.57"
+								}
+							}
+						}
+					}
+				},
+				"actor_1": {
+					"name": "FemaleVisitorWalk",
+					"skin": {
+						"file": "model://FemaleVisitorWalk/meshes/FemaleVisitorWalk.dae",
+						"scale": 1.0
+					},
+					"animation": {
+						"name": "walk",
+						"file": "model://FemaleVisitorWalk/meshes/FemaleVisitorWalk.dae",
+						"scale": 1.0,
+						"interpolate_x": true
+					},
+					"script": {
+						"loop": true,
+						"delay": 1.0,
+						"auto_start": true,
+						"trajectory": {
+							"id": 0,
+							"type": "walk",
+							"tension": 0.6,
+							"waypoints": {
+								"waypoint_0":{
+									"time": 0.0,
+									"pose": "0 -23 0 0 0 1.57"
 								},
-								"waypoint_5":{
-									"time": 49.0,
-									"pose": "2 0 0 0 0 -1.57"
+								"waypoint_1":{
+									"time": 1.0,
+									"pose": "0 -23 0 0 0 -1.57"
+								},
+								"waypoint_2":{
+									"time": 3.5,
+									"pose": "0 -26 0 0 0 -1.57"
+								},
+								"waypoint_3":{
+									"time": 4,
+									"pose": "0 -26 0 0 0 1.57"
+								},
+								"waypoint_4":{
+									"time": 6.5,
+									"pose": "0 -23 0 0 0 1.57"
 								}
 							}
 						}
