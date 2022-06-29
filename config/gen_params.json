@@ -116,6 +116,14 @@
 			"name": "rqt_image_view_0",
 			"output": "screen",
 			"parameters": []
+		},
+		"ros2Node_7":{
+			"timing": "post-spawn",
+			"package": "rqt_image_view",
+			"executable": "rqt_image_view",
+			"name": "rqt_image_view_1",
+			"output": "screen",
+			"parameters": []
 		}
 	},
 	"world": {
