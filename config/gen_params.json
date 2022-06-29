@@ -105,7 +105,7 @@
 			"parameters": [{"debug_topic": "/DebugImageSim"},
 							{"tflite_topic": "/TFLiteSim"},
 							{"image_topic": "/NPU/image_sim"},
-							{"threshold": 0.3},
+							{"threshold": 0.55},
 							{"max_returns": 5},
 							{"max_queue": 30}]
 		},
